@@ -18,5 +18,5 @@ p2 = sum [ x | x <- fibnext [1,1], even x]
 -- What is the largest prime factor of the number 600851475143 ?
 
 -- checks for factors only up through sqrt x, because those larger are guaranteed to be not prime
-findfactors :: (Integral a) -> [a]
+findfactors :: Integral a => a -> [a]
 findfactors x = if x <= 1 then [] else [ y | y <- [2..floor (sqrt x)], x `mod` y == 0 ]
