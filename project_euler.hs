@@ -1,6 +1,9 @@
 -- haskell functions for solving project euler questions!
 -- (see projecteuler.net)
 
+-- i am learning this language as i go, so early
+-- solutions will probably be horrible
+
 -- problem 1:
 -- If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
 -- Find the sum of all the multiples of 3 or 5 below 1000.
@@ -16,10 +19,16 @@ p2 = sum [ x | x <- fibnext [1,1], even x]
 -- problem 3:
 -- The prime factors of 13195 are 5, 7, 13 and 29.
 -- What is the largest prime factor of the number 600851475143 ?
-
---findfactors :: (Integral [a], Ord a) => [a] -> [a]
+p3num :: Int
 p3num = 600851475143
-p3 = head [ y | y <- [p3num,p3num-1..1], odd y, p3num `mod` y == 0, isprime y ]
+
+p3 :: Integral a => a -> a
+p3 x 
+ | smallestprime x == x	= x
+ | otherwise		= p3 $ x `div` (smallestprime x)
+
+smallestprime :: Integral a => a -> a
+smallestprime x = head [ y | y <- [2,3..x], x `mod` y == 0, isprime y ]
 
 -- a lazily tossed together primality checker
 isprime :: Integral a => a -> Bool
