@@ -17,8 +17,14 @@ p2 = sum [ x | x <- fibnext [1,1], even x]
 -- The prime factors of 13195 are 5, 7, 13 and 29.
 -- What is the largest prime factor of the number 600851475143 ?
 
--- try counting down rather than up!
 --findfactors :: (Integral [a], Ord a) => [a] -> [a]
-findfactors x | x <= 1		= 0
-              | otherwise	= [ head y | y <- [x,x-1..1], x `mod` y == 0 ]
+p3num = 600851475143
+p3 = head [ y | y <- [p3num,p3num-1..1], odd y, p3num `mod` y == 0, isprime y ]
 
+-- a lazily tossed together primality checker
+isprime :: Integral a => a -> Bool
+isprime x = 
+	if length [ y | y <- [2..floor $ sqrt $ fromIntegral x], x `mod` y == 0] == 0 then
+		True
+	else
+		False
