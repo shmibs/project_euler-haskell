@@ -37,3 +37,16 @@ isprime x =
 		True
 	else
 		False
+
+-- problem 4:
+-- A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
+-- Find the largest palindrome made from the product of two 3-digit numbers.
+
+p4 = maximum $ prods (999 :: Int)
+
+prods :: (Enum a, Eq a, Num a, Show a) => a -> [a]
+prods x
+ | x == 100  = []
+ | otherwise = [ y | y <- sub x, ispalindrome y ] ++ (prods $ x-1)
+ where sub x          = [ x*y | y <- [x,x-1..100] ]
+       ispalindrome x = show x == (reverse $ show x)
