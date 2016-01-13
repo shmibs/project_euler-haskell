@@ -36,11 +36,12 @@ smallestprime x = head [ y | y <- [2,3..x], x `mod` y == 0, isprime y ]
 
 -- a lazily tossed together primality checker
 isprime :: Integral a => a -> Bool
-isprime x = 
-    if length [ y | y <- [2..ceiling $ sqrt $ fromIntegral x], x `mod` y == 0] == 0 then
-        True
-    else
-        False
+isprime x
+ | x == 1    = False
+ | x == 2    = True
+ | otherwise = if length [ y | y <- [2..ceiling $ sqrt $ fromIntegral x], x `mod` y == 0] == 0
+    then True
+    else False
 
 -- problem 4:
 -- A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
@@ -79,3 +80,10 @@ p6 = (squareofsum 100) - (sumofsquares 100)
 sumofsquares x = sum [ y^2 | y <- [1..x] ]
 
 squareofsum x = (sum [ y | y <- [1..x] ])^2
+
+-- problem 7:
+-- By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.
+-- What is the 10 001st prime number?
+p7 = nthprime 10001
+
+nthprime x = [ y :: Int | y <- [1..], isprime y] !! (x-1)
