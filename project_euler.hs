@@ -19,13 +19,17 @@ p2 = sum [ x | x <- fibnext [1,1], even x]
 -- problem 3:
 -- The prime factors of 13195 are 5, 7, 13 and 29.
 -- What is the largest prime factor of the number 600851475143 ?
+
+p3 :: Int
+p3 = p3func p3num
+
 p3num :: Int
 p3num = 600851475143
 
-p3 :: Integral a => a -> a
-p3 x 
+p3func :: Integral a => a -> a
+p3func x 
  | smallestprime x == x = x
- | otherwise            = p3 $ x `div` (smallestprime x)
+ | otherwise            = p3func $ x `div` (smallestprime x)
 
 smallestprime :: Integral a => a -> a
 smallestprime x = head [ y | y <- [2,3..x], x `mod` y == 0, isprime y ]
@@ -42,6 +46,7 @@ isprime x =
 -- A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
 -- Find the largest palindrome made from the product of two 3-digit numbers.
 
+p4 :: Int
 p4 = maximum $ p4prods (999 :: Int)
 
 p4prods :: (Enum a, Eq a, Num a, Show a) => a -> [a]
@@ -50,8 +55,6 @@ p4prods x
  | otherwise = [ y | y <- sub x, ispalindrome y ] ++ (p4prods $ x-1)
  where sub x          = [ x*y | y <- [x,x-1..100] ]
        ispalindrome x = show x == (reverse $ show x)
-
-
 
 -- problem 5:
 -- 2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
@@ -63,3 +66,16 @@ p5 = head [ y | y <- [1..], sub y 20 ]
         | y == 1    = True
         | otherwise = if x `mod` y /= 0 then False else sub x (y-1)
 
+-- problem 6:
+-- The sum of the squares of the first ten natural numbers is,
+-- 12 + 22 + ... + 102 = 385
+-- The square of the sum of the first ten natural numbers is,
+-- (1 + 2 + ... + 10)2 = 552 = 3025
+-- Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025 − 385 = 2640.
+-- Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
+
+p6 = (squareofsum 100) - (sumofsquares 100)
+
+sumofsquares x = sum [ y^2 | y <- [1..x] ]
+
+squareofsum x = (sum [ y | y <- [1..x] ])^2
