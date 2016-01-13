@@ -138,3 +138,9 @@ p9 = foldl1 (*) $ head $ [
                            c <- [1..1000], b < c, a < b,
                            a + b + c == 1000, a^2 + b^2 == c^2
                          ]
+
+-- problem 10:
+-- The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
+-- Find the sum of all the primes below two million
+
+p10 = sum [ a | a <- [1..2000000], isprime a ]
