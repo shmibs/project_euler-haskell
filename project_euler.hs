@@ -24,8 +24,8 @@ p3num = 600851475143
 
 p3 :: Integral a => a -> a
 p3 x 
- | smallestprime x == x	= x
- | otherwise		= p3 $ x `div` (smallestprime x)
+ | smallestprime x == x = x
+ | otherwise            = p3 $ x `div` (smallestprime x)
 
 smallestprime :: Integral a => a -> a
 smallestprime x = head [ y | y <- [2,3..x], x `mod` y == 0, isprime y ]
@@ -33,20 +33,33 @@ smallestprime x = head [ y | y <- [2,3..x], x `mod` y == 0, isprime y ]
 -- a lazily tossed together primality checker
 isprime :: Integral a => a -> Bool
 isprime x = 
-	if length [ y | y <- [2..floor $ sqrt $ fromIntegral x], x `mod` y == 0] == 0 then
-		True
-	else
-		False
+    if length [ y | y <- [2..ceiling $ sqrt $ fromIntegral x], x `mod` y == 0] == 0 then
+        True
+    else
+        False
 
 -- problem 4:
 -- A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
 -- Find the largest palindrome made from the product of two 3-digit numbers.
 
-p4 = maximum $ prods (999 :: Int)
+p4 = maximum $ p4prods (999 :: Int)
 
-prods :: (Enum a, Eq a, Num a, Show a) => a -> [a]
-prods x
+p4prods :: (Enum a, Eq a, Num a, Show a) => a -> [a]
+p4prods x
  | x == 100  = []
- | otherwise = [ y | y <- sub x, ispalindrome y ] ++ (prods $ x-1)
+ | otherwise = [ y | y <- sub x, ispalindrome y ] ++ (p4prods $ x-1)
  where sub x          = [ x*y | y <- [x,x-1..100] ]
        ispalindrome x = show x == (reverse $ show x)
+
+
+
+-- problem 5:
+-- 2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
+-- What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
+
+p5 :: Int
+p5 = head [ y | y <- [1..], sub y 20 ]
+ where sub x y
+        | y == 1    = True
+        | otherwise = if x `mod` y /= 0 then False else sub x (y-1)
+
