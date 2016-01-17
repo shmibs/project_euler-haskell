@@ -1,4 +1,6 @@
-import Control.Monad
+-- p14
+import Data.List
+
 -- haskell functions for solving project euler questions!
 -- (see projecteuler.net)
 
@@ -250,7 +252,7 @@ trinums = [ sumAt a | a <- [1..] ]
 factors x = (1:) $ (x:) $ concat [ [y, x `div` y] | y <- [2..max], x `mod` y == 0 ]
  where max = floor $ sqrt $ fromIntegral x
 
--- problem 13
+-- problem 13:
 -- Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.
 -- [..redacted..]
 
@@ -359,8 +361,30 @@ p13nums = [
            53503534226472524250874054075591789781264330331690
           ]
 
+fromDigitArray :: Integral a => [a] -> a
 fromDigitArray xs = sub xs 0
  where sub xs index
         | index == len = 0
         | otherwise = (10^(len-index-1)*(xs !! index)) + (sub xs $ index+1)
            where len = length xs
+
+-- problem 14:
+-- The following iterative sequence is defined for the set of positive integers:
+-- n → n/2 (n is even)
+-- n → 3n + 1 (n is odd)
+-- Using the rule above and starting with 13, we generate the following sequence:
+-- 13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1
+-- It can be seen that this sequence (starting at 13 and finishing at 1) contains 10 terms. Although it has not been proved yet (Collatz Problem), it is thought that all starting numbers finish at 1.
+-- Which starting number, under one million, produces the longest chain?
+-- NOTE: Once the chain starts the terms are allowed to go above one million.
+
+p14 = fst $ maximumBy (\a b -> compare (snd a) (snd b)) [(y, collatzCount y) | y <- [1..1000000] ]
+
+collatzCount x = snd $ sub (x, 1)
+ where sub (x, c)
+        | x == 1    = (x, c)
+        | otherwise = sub (collatzNext x, c+1)
+
+collatzNext x = if (x `mod` 2 == 0)
+                then (x `div` 2)
+                else (3*x + 1)
